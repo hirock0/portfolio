@@ -1,7 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import { Toaster } from "react-hot-toast";
+import ReduxProvider from "@/utils/redux/reduxProvider";
+import Nav from "@/components/nav+footer/nav/nav";
+import { Poppins } from "next/font/google";
+import Footer from "@/components/nav+footer/footer/footer";
+import AuthProvider from "@/context/AuthProviders";
+const poppins = Poppins({
+  weight:["400","400"],
+  subsets:["latin"]
+})
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +25,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <ReduxProvider>
+        <AuthProvider>
+        <body className={poppins.className || inter.className}>
+        <Toaster
+        toastOptions={{
+            style:{
+              background:"rgb(0, 155, 255)",
+              color:"white"
+            }
+        }}
+      
+      />
+          <Nav/>
+          {children}
+          <Footer/>
+        </body>
+        </AuthProvider>
+      </ReduxProvider>
     </html>
   );
 }
